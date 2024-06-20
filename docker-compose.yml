@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  my_budget:
+    build: .
+    container_name: my_budget
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mybudget-db.cjkgseym2qg5.us-west-1.rds.amazonaws.com:3306/mybudget_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: master_password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql_dummy
+
+  mysql_dummy:
+    image: mysql:8.0
+    container_name: mysql_dummy
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: dummy
+      MYSQL_USER: dummyuser
+      MYSQL_PASSWORD: dummypassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
